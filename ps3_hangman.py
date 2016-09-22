@@ -50,25 +50,11 @@ def isWordGuessed(secretWord, lettersGuessed):
     returns: boolean, True if all the letters of secretWord are in lettersGuessed;
       False otherwise
     '''
-    res=False
-    d={}
+    ls=[]    
     for i in range(len(secretWord)):
-        
-        if secretWord[i] in lettersGuessed:
-            d[secretWord[i]]=0
-            
-            d[secretWord[i]]+=1
-            lettersGuessed.remove(secretWord[i])
-        else:
-            d[secretWord[i]]=0
-            
-        
-    if 0 in d.values():
-        res=False
-    else: 
-        res=True
-    return res
-
+        ls.append(secretWord[i])
+    ls=set(ls)
+    return ls.issubset(lettersGuessed)
 
 
 def getGuessedWord(secretWord, lettersGuessed):
@@ -79,15 +65,10 @@ def getGuessedWord(secretWord, lettersGuessed):
       what letters in secretWord have been guessed so far.
     '''
     
-    res1=''
-    for i in range(len(secretWord)):
-        
-        if secretWord[i] in lettersGuessed:
-            res1=res1+secretWord[i]
-        else:
-            res1=res1+'_ '
-            
-    return res1
+    for i in secretWord:
+        if i not in lettersGuessed:
+            secretWord=secretWord.replace(i,'_')
+    return secretWord
 
 
 import string
@@ -127,38 +108,40 @@ def hangman(secretWord):
 
     Follows the other limitations detailed in the problem write-up.
     '''
-    global res1
-    
+
     lettersGuessed=[]
     n=0
     let=''
+    x=0
     print('Welcome to the game, Hangman!')
     print('I am thinking of a word that is', len(secretWord), 'letters long.')
     while n<8:
-        print('You have ', 8-n, 'attempts left')
+        x=0
+        print('You have ', 8-n, 'guesses left.')
 #        print ('Please pick up a letter: ', getAvailableLetters(lettersGuessed))
-        print('Available letters ', getAvailableLetters(lettersGuessed))
-        let=input('Please pick up a letter: ')
+        print('Available letters: ', getAvailableLetters(lettersGuessed))
+        let=input('Please guess a letter: ')
+        let=let.lower()
         if let in lettersGuessed:
-            print ('You have picked this letter before, please make another guess')
-            print ('Available letters',getAvailableLetters(lettersGuessed))
-            let=input('Please pick up a letter: ')                        
-             
+            print ("Oops! You've already guessed that letter: ", let)
+            n=n-1
+            x=1
             
         lettersGuessed.append(let)
-        if let in secretWord:
-            print ('Good guess!', getGuessedWord(secretWord, lettersGuessed))
-            print (lettersGuessed, '111')
+        if x==0 and let in secretWord:
+            print ('Good guess: ', getGuessedWord(secretWord, lettersGuessed))
+            
             if isWordGuessed(secretWord, lettersGuessed)==True:
                 print('Congratulations, You won!')
+                break
 
-        else:
-            print('Oops,make another attempt', getGuessedWord(secretWord, lettersGuessed))
-            print (lettersGuessed, '222')
+        elif x==0 and let not in secretWord:
+            print('Oops! That letter is not in my word: ', getGuessedWord(secretWord, lettersGuessed))
+#            print (lettersGuessed, '222')
         n+=1
         
     if n>7:
-        print ('Sorry, you have run out of guesses. The word was ', secretWord)
+        print ('Sorry, you ran out of guesses. The word was ', secretWord)
 
 
 
@@ -168,5 +151,5 @@ def hangman(secretWord):
 # and run this file to test! (hint: you might want to pick your own
 # secretWord while you're testing)
 
-# secretWord = chooseWord(wordlist).lower()
-# hangman(secretWord)
+ #secretWord = chooseWord(wordlist).lower()
+ #hangman(secretWord)
