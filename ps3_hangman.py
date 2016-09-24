@@ -1,12 +1,3 @@
-# Hangman game
-#
-
-# -----------------------------------
-# Helper code
-# You don't need to understand this helper code,
-# but you will have to know how to use the functions
-# (so be sure to read the docstrings!)
-
 import random
 
 WORDLIST_FILENAME = "C:\words.txt"
@@ -31,7 +22,6 @@ def loadWords():
 def chooseWord(wordlist):
     """
     wordlist (list): list of words (strings)
-
     Returns a word from wordlist at random
     """
     return random.choice(wordlist)
@@ -91,21 +81,15 @@ def getAvailableLetters(lettersGuessed):
 def hangman(secretWord):
     '''
     secretWord: string, the secret word to guess.
-
     Starts up an interactive game of Hangman.
-
     * At the start of the game, let the user know how many 
       letters the secretWord contains.
-
     * Ask the user to supply one guess (i.e. letter) per round.
-
     * The user should receive feedback immediately after each guess 
       about whether their guess appears in the computers word.
-
     * After each round, you should also display to the user the 
       partially guessed word so far, as well as letters that the 
       user has not yet guessed.
-
     Follows the other limitations detailed in the problem write-up.
     '''
 
@@ -113,31 +97,31 @@ def hangman(secretWord):
     n=0
     let=''
     x=0
-    print('Welcome to the game, Hangman!')
-    print('I am thinking of a word that is', len(secretWord), 'letters long.')
-    print ('-------------')
+    print('Welcome to the game Hangman!')
+    print('I am thinking of a word that is', len(secretWord), 'letters long')
+    print ('-----------')
     while n<8:
         x=0
-        print('You have ', 8-n, 'guesses left.')
-        print('Available letters: ', getAvailableLetters(lettersGuessed))
+        print('You have', 8-n, 'guesses left')
+        print('Available Letters:', getAvailableLetters(lettersGuessed))
         let=input('Please guess a letter: ')
         let=let.lower()
         if let in lettersGuessed:
-            print ("Oops! You've already guessed that letter: ", let)
-            
+            print ("Oops! You've already guessed that letter:", getGuessedWord(secretWord, lettersGuessed))
+            print ('-----------')
             x=1
             
         lettersGuessed.append(let)
         if x==0 and let in secretWord:
-            print ('Good guess: ', getGuessedWord(secretWord, lettersGuessed))
-            print ('-------------')
+            print ('Good guess:', getGuessedWord(secretWord, lettersGuessed))
+            print ('-----------')
             if isWordGuessed(secretWord, lettersGuessed)==True:
-                print('Congratulations, You won!')
+                print('Congratulations, you won!')
                 break
 
         elif x==0 and let not in secretWord:
             print('Oops! That letter is not in my word: ', getGuessedWord(secretWord, lettersGuessed))
-            print ('-------------')
+            print ('-----------')
             n+=1
         
     if n>7:
