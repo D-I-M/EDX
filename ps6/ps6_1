@@ -1,4 +1,5 @@
 
+
 import string
 
 ### DO NOT MODIFY THIS FUNCTION ###
@@ -105,17 +106,17 @@ class Message(object):
         
         for i in range(len(s)):
             if i>len(s)-shift-1:
-                sdict[s[shift-(len(s)-i)]]=s[i]
+                sdict[s[i]]=s[shift-(len(s)-i)]
             else:
-                sdict[s[i+shift]]=s[i]
+                sdict[s[i]]=s[i+shift]
         
         s=string.ascii_lowercase
 
         for i in range(len(s)):
             if i>len(s)-shift-1:
-                sdict[s[shift-(len(s)-i)]]=s[i]
+                sdict[s[i]]=s[shift-(len(s)-i)]
             else:
-                sdict[s[i+shift]]=s[i]
+                sdict[s[i]]=s[i+shift]
         return sdict
             
     def apply_shift(self, shift):
